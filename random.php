@@ -21,18 +21,16 @@ array_filter($_SESSION['usedPosts']);
 array_push($_SESSION['usedPosts'], $datas);
 
 
-//$result = array_diff($_SESSION['usedPosts'][0][0], $_SESSION['used']);
-
     foreach ($_SESSION['usedPosts'][0][0] as $data) {
 
-            print_r ($data);
-        $usedArr[] = $data;
-        $_SESSION['used']=$usedArr;
+        print_r ($data);
+    $usedArr[] = $data;
+    $_SESSION['used']=$usedArr;
             
     };
 
 
 //print_r($_SESSION['used']);
 //funkar inte
-array_splice($_SESSION['usedPosts'][0][0], 0, 1);
+//array_splice($_SESSION['usedPosts'][0][0], 0, 1);
 ?>

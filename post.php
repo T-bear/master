@@ -48,3 +48,5 @@ print_r($result);
     }
 
 ?>
+
+<input type="button" value="Put Your Text Here" onclick="window.location.href='http://localhost/posts.php'" />

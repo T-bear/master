@@ -10,17 +10,15 @@
 
 // Starting session
 session_start();
-    session_regenerate_id();
-    //echo session_id();
+session_regenerate_id();
+//echo session_id();
     
 // create an array
 $my_array=array();
  
 // put the array in a session variable
 $_SESSION['usedPosts']=$my_array;
- 
 
-    include 'random.php'
 ?>
     
 <form method="post" action="connect.php">

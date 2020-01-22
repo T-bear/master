@@ -7,30 +7,48 @@ $conn = mysqli_connect("localhost", "root", "", "youtube");
 if ($conn->connect_error) {
 die("Connection failed: " . $conn->connect_error);
 }
-$sql = "SELECT post FROM posts";
+$sql = "SELECT * FROM posts";
+$sql2 = "SELECT * FROM usedposts";
 $result = $conn->query($sql);
-//$data = array();
+$result2 = $conn->query($sql2);
+
+//var_dump($result);
+
     if (mysqli_num_rows($result) > 0 ){
         while($row = mysqli_fetch_assoc($result)){
             $datas[] = $row;
         }
     }
-    shuffle($datas);
-
-array_filter($_SESSION['usedPosts']);
-array_push($_SESSION['usedPosts'], $datas);
 
 
-    foreach ($_SESSION['usedPosts'][0][0] as $data) {
+    if (mysqli_num_rows($result2) > 0 ){
+        while($row2 = mysqli_fetch_assoc($result2)){
+            $datas2[] = $row2;
+        }
+    }
 
-        print_r ($data);
-    $usedArr[] = $data;
-    $_SESSION['used']=$usedArr;
+//var_dump($datas);
+//var_dump($datas2);
+//shuffle($datas);
+
+    /*foreach ($datas as $data) {
+        foreach ($datas2 as $data2) {
+        
+        if ($data['id'] != $data2['post_id']){
+            print_r ("DIFFERENT");
+        }
+            else{
+                echo("SAME");
+            }
             
+        };
     };
+    */
+    for ($x = 0; $x <= count($datas2); $x++) {
+        for ($k = 0; $k <= count($datas); $k++){
+            print_r($datas[$x]);
+        }
+        
+}
 
-
-//print_r($_SESSION['used']);
-//funkar inte
-//array_splice($_SESSION['usedPosts'][0][0], 0, 1);
 ?>

@@ -1,18 +1,20 @@
 <?php
-//remove from array that has been used.
-//session_start();
+
 header("Content-type: text/html; charset=iso-8859-1"); 
 $conn = mysqli_connect("localhost", "root", "", "youtube");
 // Check connection
 if ($conn->connect_error) {
 die("Connection failed: " . $conn->connect_error);
 }
-$sql = "SELECT * FROM posts";
-$sql2 = "SELECT * FROM usedposts";
+$sql = "SELECT id FROM posts";
+$sql2 = "SELECT post_id FROM usedposts";
+/*
+#
+#
+#
+*/
 $result = $conn->query($sql);
 $result2 = $conn->query($sql2);
-
-//var_dump($result);
 
     if (mysqli_num_rows($result) > 0 ){
         while($row = mysqli_fetch_assoc($result)){
@@ -20,35 +22,37 @@ $result2 = $conn->query($sql2);
         }
     }
 
-
     if (mysqli_num_rows($result2) > 0 ){
         while($row2 = mysqli_fetch_assoc($result2)){
             $datas2[] = $row2;
         }
-    }
-
-//var_dump($datas);
-//var_dump($datas2);
-//shuffle($datas);
-
-    /*foreach ($datas as $data) {
-        foreach ($datas2 as $data2) {
-        
-        if ($data['id'] != $data2['post_id']){
-            print_r ("DIFFERENT");
-        }
-            else{
-                echo("SAME");
-            }
-            
-        };
     };
-    */
-    for ($x = 0; $x <= count($datas2); $x++) {
-        for ($k = 0; $k <= count($datas); $k++){
-            print_r($datas[$x]);
-        }
-        
-}
+/*
+#
+#
+#
+*/
+shuffle($datas);
+/*
+#
+#
+#
+*/
+$resultOfDub = array_diff($datas[0], $datas2[0]);
 
+    if (empty($resultOfDub['id'])){
+        //ugly fix - Kevin
+        header("Refresh:0");
+    } else {
+        $id = $resultOfDub['id'];
+        $_SESSION['post_id']=$id;
+        $sql3 = "SELECT post FROM posts WHERE id like '$id'";
+        $result3 = $conn->query($sql3);
+        if (mysqli_num_rows($result3) > 0 ){
+        while($row3 = mysqli_fetch_assoc($result3)){
+            $posts[] = $row3;
+        print_r($posts[0]['post']);
+        }
+    }
+    }
 ?>

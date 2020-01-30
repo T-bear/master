@@ -1,5 +1,5 @@
 <?php
-
+$session_id = session_id();
 header("Content-type: text/html; charset=iso-8859-1"); 
 $conn = mysqli_connect("localhost", "root", "", "youtube");
 // Check connection
@@ -7,7 +7,7 @@ if ($conn->connect_error) {
 die("Connection failed: " . $conn->connect_error);
 }
 $sql = "SELECT id FROM posts";
-$sql2 = "SELECT post_id FROM usedposts";
+$sql2 = "SELECT post_id FROM usedposts WHERE user_id like '$session_id'";
 /*
 #
 #
@@ -32,19 +32,35 @@ $result2 = $conn->query($sql2);
 #
 #
 */
+
 shuffle($datas);
 /*
 #
 #
 #
 */
-$resultOfDub = array_diff($datas[0], $datas2[0]);
 
-    if (empty($resultOfDub['id'])){
+$unUsedPosts = array();
+$usedPosts = array();
+
+for ($i=0; $i < count($datas); $i++) { 
+    array_push($unUsedPosts, $datas[$i]["id"]);
+}
+for ($i=0; $i < count($datas2); $i++) { 
+    array_push($usedPosts, $datas2[$i]["post_id"]);
+}
+var_dump($unUsedPosts);
+var_dump($usedPosts);
+
+
+$arrPosts = array_diff($unUsedPosts, $usedPosts) + array(null);
+var_dump($arrPosts);
+
+    if (empty($arrPosts[0])){
         //ugly fix - Kevin
-        header("Refresh:0");
+        echo ("EMPTY");
     } else {
-        $id = $resultOfDub['id'];
+        $id = $arrPosts[0];
         $_SESSION['post_id']=$id;
         $sql3 = "SELECT post FROM posts WHERE id like '$id'";
         $result3 = $conn->query($sql3);
@@ -54,5 +70,5 @@ $resultOfDub = array_diff($datas[0], $datas2[0]);
         print_r($posts[0]['post']);
         }
     }
-    }
+    } 
 ?>
